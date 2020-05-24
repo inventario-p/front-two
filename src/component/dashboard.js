@@ -1,49 +1,46 @@
 import React from 'react';
-import { Button,Card } from 'react-bootstrap';
-
+import { Spinner,Card } from 'react-bootstrap';
+import Nav from './navigation';
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { countries: [] }
-    }
+        this.state = { productos: [] }
+    };
 
     componentWillMount() {
 
-        fetch('https://restcountries.eu/rest/v2/all')
+        fetch('http://localhost/konecta/back/controlador/producto.consultar.php')
             .then((data) => {
                 return data.json();
-            }).then((countries) => {
-                this.setState({ countries: countries })
+            }).then((productos) => {
+                this.setState({ productos: productos })
             });
     }
 
 
     render() {
 
-        if (this.state.countries.length > 0) {
+        if (this.state.productos.length > 0) {
             return (
-             
                 <React.Fragment>
 
-                {
-                    this.state.countries.map(item =>
+                <Nav></Nav>
 
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={item.flag}  style={{ width: '150px' }}/>
+                {
+                    this.state.productos.map(item =>
+
+                        <Card key={item.id}>
                             <Card.Body>
-                                <Card.Title>{item.name}</Card.Title>
+                                <Card.Title>{item.nombre}</Card.Title>
                             </Card.Body>
                         </Card>
                     )
                 }
-
                 </React.Fragment>
-
-
             )
         } else {
-            return <p className="text-center">Cargando paises...</p>
+            return <Spinner animation="grow" />
         }
     }
 }
