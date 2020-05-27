@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Spinner } from 'react-bootstrap';
+import { Table, Spinner, Button } from 'react-bootstrap';
 
 class Producto extends React.Component {
 
@@ -11,7 +11,7 @@ class Producto extends React.Component {
     
     componentWillMount() {
 
-        fetch('http://localhost/konecta/back/controlador/producto.consultar.php')
+        fetch('http://localhost/konecta/konecta/back/controlador/producto.consultar.php')
             .then((data) => {
                 return data.json();
             }).then((productos) => {
@@ -19,6 +19,20 @@ class Producto extends React.Component {
             });
     }
     
+    del(id) {
+        console.log("try delete "+id)
+        return true;
+    }    
+    eliminar(id) {
+        fetch('http://localhost/konecta/back/controlador/producto.eliminar.php', {
+            method: 'POST',
+            body: 'id'+{id}
+        })
+        .then((data) => {
+            return data.json();
+        }).then((productos) => {
+            this.setState({ productos: productos })
+        });    }
 
     render() {
 
@@ -48,7 +62,11 @@ class Producto extends React.Component {
                             <td>{item.peso}</td>
                             <td>{item.categoria}</td>
                             <td>{item.stock}</td>
-                            <td>{item.nombre}</td>
+                            <td>
+                            <Button onClick={this.del(item.id)}>
+                                a
+                            </Button>
+                            </td>
                         </tr>)
                     }
                     </tbody>

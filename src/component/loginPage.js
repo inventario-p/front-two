@@ -1,53 +1,58 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
-//import styles from '../assets/styles/Login.css';
+import { Form,Button } from "react-bootstrap";
+import Api from "../services/api";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nombre: "",
-      contrasena: "",
-      mensaje: ""
+      usuario: "",
+      contrasena: ""
     }
-  }
+    this.api = new Api();
+  };
 
-  componentWillMount() {
+  handleChangeUsuario = e => {
+    this.setState({ usuario: e.target.value });
+    console.log(this.state.usuario);
+  };
 
-    fetch('http://localhost/konecta/back/controlador/producto.consultar.php')
-      .then((data) => {
-        return data.json();
-      }).then((mensaje) => {
-        this.setState({ mensaje: mensaje})
+  handleChangeContrasena = e => {
+    this.setState({ contrasena: e.target.value });
+    console.log("estado Contrasena"+ this.state.contrasena)
+  };
+
+  hanleSubmit = async () => {
+    console.log("estado usuario"+ this.state.usuario)
+    //const save = await this.api.loguearse({"usuario": this.state.usuario, "contrasena": this.state.contrasena});
+
+      fetch('http://localhost/konecta/konecta/back/entorno/validarIngreso.php?Usuario=&Contrasena=password2020')
+          .then((data) => {
+            return data.json();
+          }).then((productos) => {
+        this.setState({ productos: productos })
       });
-  }
+  };
 
-    // handleChange(event) {
-    //   this.setState({ nombre: event.target.value });
-    // }
+
 
   render() {
     return (
+
       <React.Fragment>
         {
-          // <form>
-          //   <label htmlFor="name">Name:</label>
-          //   <input  id="name" type="text" onChange={this.handleChange} />
-          //   <input type="submit" value="Enviar" />
-          // </form>
-
-          <Form>
+          <Form id="formulario" >
             <Form.Group controlId="usuario">
               <Form.Label>Usuario</Form.Label>
-              <Form.Control type="text" placeholder="Ingrese su Usuario" />
+              <Form.Control name="Usuario" type="text" placeholder="Ingrese su Usuario" value={this.state.usuario} onChange={this.handleChangeUsuario} />
             </Form.Group>
 
             <Form.Group controlId="contrasena">
               <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" placeholder="Ingrese su Contraseña" />
+              <Form.Control name="Contrasena" type="password" placeholder="Ingrese su Contraseña" onChange={this.handleChangeContrasena} />
             </Form.Group>
-            
-            <Button variant="primary" type="submit" >
+
+            <Button variant="primary" type="submit" onClick={this.hanleSubmit}>
               Enviar
             </Button>
           </Form>
