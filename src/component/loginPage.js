@@ -14,50 +14,39 @@ class Login extends React.Component {
 
   handleChangeUsuario = e => {
     this.setState({ usuario: e.target.value });
-    console.log(this.state.usuario);
   };
 
   handleChangeContrasena = e => {
     this.setState({ contrasena: e.target.value });
-    console.log("estado Contrasena"+ this.state.contrasena)
   };
 
   hanleSubmit = async () => {
-    console.log("estado usuario"+ this.state.usuario)
-    //const save = await this.api.loguearse({"usuario": this.state.usuario, "contrasena": this.state.contrasena});
-
-      fetch('http://localhost/konecta/konecta/back/entorno/validarIngreso.php?Usuario=&Contrasena=password2020')
-          .then((data) => {
-            return data.json();
-          }).then((productos) => {
-        this.setState({ productos: productos })
-      });
+    await this.api.loguearse({Usuario: this.state.usuario, Contrasena: this.state.contrasena});
+    //console.log(data)
   };
-
-
 
   render() {
     return (
 
-      <React.Fragment>
-        {
-          <Form id="formulario" >
-            <Form.Group controlId="usuario">
-              <Form.Label>Usuario</Form.Label>
-              <Form.Control name="Usuario" type="text" placeholder="Ingrese su Usuario" value={this.state.usuario} onChange={this.handleChangeUsuario} />
-            </Form.Group>
+        <React.Fragment>
+          {
+            <Form id="formulario" >
+              <Form.Group controlId="usuario">
+                <Form.Label>Usuario</Form.Label>
+                <Form.Control name="Usuario" type="text" placeholder="Ingrese su Usuario" value={this.state.usuario} onChange={this.handleChangeUsuario} />
+              </Form.Group>
 
-            <Form.Group controlId="contrasena">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control name="Contrasena" type="password" placeholder="Ingrese su Contraseña" onChange={this.handleChangeContrasena} />
-            </Form.Group>
+              <Form.Group controlId="contrasena">
+                <Form.Label>Contraseña</Form.Label>
+                <Form.Control name="Contrasena" type="password" placeholder="Ingrese su Contraseña" onChange={this.handleChangeContrasena} />
+              </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={this.hanleSubmit}>
-              Enviar
-            </Button>
-          </Form>
-        }
-      </React.Fragment>
+              <Button variant="primary" onClick={this.hanleSubmit}>
+                Enviar
+              </Button>
+            </Form>
+          }
+        </React.Fragment>
     )
   }
 }
